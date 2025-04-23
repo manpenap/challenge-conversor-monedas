@@ -5,7 +5,7 @@ public class CalculadoraDeCambio {
         ConsultaApi consulta = new ConsultaApi();
         String monedaBase = "";
         String monedaDestino = "";
-        String mensaje="";
+        String mensaje;
 
         switch (opcion){
             case 1:
@@ -34,9 +34,8 @@ public class CalculadoraDeCambio {
         }
 
         TipoDeCambio resultado = consulta.buscarTipoCambio(monedaBase,monedaDestino,cantidadDivisa);
-        mensaje = "El valor de " + cantidadDivisa + "["+ monedaBase +"] "
-                + "corresponde al valor final de =>>>" + resultado.conversion_result()
-                + "["+ monedaDestino +"]";
+        mensaje = String.format("El valor de %.2f [%s] corresponde a %.2f[%s]",
+                cantidadDivisa,monedaBase,resultado.conversion_result(),monedaDestino);
         return mensaje;
     }
 }
