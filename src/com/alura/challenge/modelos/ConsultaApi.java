@@ -12,6 +12,7 @@ public class ConsultaApi {
     String monedaBase;
     String monedaDestino;
     double cantidadMoneda;
+    private final HttpClient client = HttpClient.newHttpClient();
 
     public TipoDeCambio buscarTipoCambio(String monedaBase, String monedaDestino, double montoACambiar){
 
@@ -20,14 +21,13 @@ public class ConsultaApi {
         + monedaDestino + "/"
         + montoACambiar);
 
-        HttpClient client = HttpClient.newHttpClient();
+
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(direccion)
                 .build();
-        HttpResponse<String> response;
 
         try {
-            response = client
+            HttpResponse<String> response = client
                     .send(request, HttpResponse.BodyHandlers.ofString());
             return new Gson().fromJson(response.body(), TipoDeCambio.class);
         } catch (IOException | InterruptedException e) {
