@@ -1,41 +1,31 @@
 package com.alura.challenge.modelos;
 
-public class CalculadoraDeCambio {
-    public String calcular(int opcion, double cantidadDivisa){
-        ConsultaApi consulta = new ConsultaApi();
-        String monedaBase = "";
-        String monedaDestino = "";
-        String mensaje;
+import java.util.HashMap;
+import java.util.Map;
 
-        switch (opcion){
-            case 1:
-                monedaBase = "USD";
-                monedaDestino = "ARS";
-                break;
-            case 2:
-                monedaBase = "ARS";
-                monedaDestino = "USD";
-                break;
-            case 3:
-                monedaBase = "USD";
-                monedaDestino = "BRL";
-                break;
-            case 4:
-                monedaBase = "BRL";
-                monedaDestino = "USD";
-                break;
-            case 5:
-                monedaBase = "USD";
-                monedaDestino = "COP";
-                break;
-            case 6:
-                monedaBase = "COP";
-                monedaDestino = "USD";
+public class CalculadoraDeCambio {
+    private ConsultaApi consulta = new ConsultaApi();
+    private static final Map<Integer, String[]> conversiones = new HashMap<>();
+
+    static{
+        conversiones.put(1,new String[]{"USD","ARS"});
+        conversiones.put(2,new String[]{"ARS","USD"});
+        conversiones.put(3,new String[]{"USD","BRL"});
+        conversiones.put(4,new String[]{"BRL","USD"});
+        conversiones.put(5,new String[]{"USD","COP"});
+        conversiones.put(6,new String[]{"COP","USD"});
+    }
+
+    public String calcular(int opcion, double cantidadDivisa){
+        String[] monedas = conversiones.get(opcion);
+        if(monedas == null){
+            return "Opción inválida.";
         }
 
-        TipoDeCambio resultado = consulta.buscarTipoCambio(monedaBase,monedaDestino,cantidadDivisa);
-        mensaje = String.format("El valor de %.2f [%s] corresponde a %.2f[%s]",
-                cantidadDivisa,monedaBase,resultado.conversion_result(),monedaDestino);
-        return mensaje;
+        TipoDeCambio resultado = consulta.buscarTipoCambio(monedas[0],monedas[1],cantidadDivisa);
+        return String.format("El valor de %.2f [%s] corresponde a %.2f[%s]",
+                cantidadDivisa,monedas[0],resultado.conversion_result(),monedas[1]);
     }
+
+
 }
