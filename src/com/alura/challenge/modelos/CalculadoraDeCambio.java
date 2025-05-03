@@ -1,11 +1,19 @@
 package com.alura.challenge.modelos;
 
+import com.alura.challenge.utils.GeneradorHistorial;
+
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CalculadoraDeCambio {
     private ConsultaApi consulta = new ConsultaApi();
+    private List<TipoDeCambio> tiposDeCambio = new ArrayList<>();
+    private GeneradorHistorial generadorHistorial = new GeneradorHistorial();
     private static final Map<Integer, String[]> conversiones = new HashMap<>();
+
 
     static{
         conversiones.put(1,new String[]{"USD","ARS"});
@@ -22,9 +30,19 @@ public class CalculadoraDeCambio {
             return "Opción inválida.";
         }
 
+
         TipoDeCambio resultado = consulta.buscarTipoCambio(monedas[0],monedas[1],cantidadDivisa);
+        tiposDeCambio.add(resultado);
+
+        try {
+            generadorHistorial.guardarConversiones(tiposDeCambio);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
         return String.format("El valor de %.2f [%s] corresponde a %.2f[%s]",
                 cantidadDivisa,monedas[0],resultado.conversion_result(),monedas[1]);
+
     }
 
 
