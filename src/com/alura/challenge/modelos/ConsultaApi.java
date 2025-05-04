@@ -9,9 +9,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class ConsultaApi {
-    String monedaBase;
-    String monedaDestino;
-    double cantidadMoneda;
+
     private final HttpClient client = HttpClient.newHttpClient();
 
     public TipoDeCambio buscarTipoCambio(String monedaBase, String monedaDestino, double montoACambiar){

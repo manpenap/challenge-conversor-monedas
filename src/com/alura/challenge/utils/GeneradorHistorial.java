@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class GeneradorHistorial {
-    public void guardarConversiones(List listaDeConversiones) throws IOException {
+    public void guardarConversiones(List<TipoDeCambio> listaDeConversiones) throws IOException {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         FileWriter historial = new FileWriter( "historialConversiones.json");
         historial.write(gson.toJson(listaDeConversiones));
