@@ -3,6 +3,8 @@ package com.alura.challenge.modelos;
 import com.alura.challenge.utils.GeneradorHistorial;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,6 +15,7 @@ public class CalculadoraDeCambio {
     private List<TipoDeCambio> tiposDeCambio = new ArrayList<>();
     private GeneradorHistorial generadorHistorial = new GeneradorHistorial();
     private static final Map<Integer, String[]> conversiones = new HashMap<>();
+
 
 
     static{
@@ -39,9 +42,12 @@ public class CalculadoraDeCambio {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        LocalDateTime fechaActual = LocalDateTime.now();
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        String fechaFormateada = fechaActual.format(formato);
 
-        return String.format("El valor de %.2f [%s] corresponde a %.2f[%s]",
-                cantidadDivisa,monedas[0],resultado.conversion_result(),monedas[1]);
+        return String.format("El valor de %.2f [%s] corresponde a %.2f[%s]. Transacción realizada el %s.",
+                cantidadDivisa,monedas[0],resultado.conversion_result(),monedas[1],fechaFormateada);
 
     }
 
